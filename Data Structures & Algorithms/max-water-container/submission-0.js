@@ -1,0 +1,42 @@
+class Solution {
+    /**
+     * @param {number[]} heights
+     * @return {number}
+     */
+    maxArea(heights) {
+        let h1 = [-Infinity,0];
+        let h2 = [-Infinity,0];
+        const map = new Map();
+
+        const calculateArea = (width, height) => Math.abs(width*height);
+
+        heights.map((val, idx) => {
+            if(val >= h1[0]) {  
+                h2 = [...h1]; 
+                h1 = [val, idx]
+            }
+
+            map.set(val, idx)
+        })
+
+        let maxArea = calculateArea(h1[1]-h2[1],Math.min(h1[0],h2[0]));
+
+        let l = 0;
+        let r= heights.length-1;
+
+        while (l < r) {
+            const area = calculateArea(r-l,Math.min(heights[l],heights[r]))
+            if(area >= maxArea) {
+                maxArea = area;
+            } 
+
+            if (r > l) {
+                l++
+            } else {
+                r--
+            }
+        }
+
+        return maxArea;
+    }
+}
